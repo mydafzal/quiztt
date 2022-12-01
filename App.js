@@ -2,20 +2,15 @@ import {StyleSheet, View, Text} from 'react-native';
 import React from 'react';
 import Home from './screens/home';
 import Quiz from './screens/quiz';
+import {NavigationContainer} from '@react-navigation/native';
+import Navigation from './navigation/stacknavigation';
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      {/* <Home /> */}
-      <Quiz />
-    </View>
+    <NavigationContainer>
+      <Navigation />
+    </NavigationContainer>
   );
 };
 
 export default App;
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 40,
-    paddingHorizontal: 16,
-  },
-});

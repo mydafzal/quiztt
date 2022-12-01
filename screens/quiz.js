@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '../components/button';
 import Spacer from '../components/spacer';
 
-const home = () => {
+const Quiz = () => {
   return (
     <View style={styles.container}>
       <View style={styles.QuestionBox}>
@@ -44,12 +44,12 @@ const home = () => {
   );
 };
 
-export default home;
+export default Quiz;
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
-    width: '100%',
+
     height: '100%',
   },
   QuestionBox: {
