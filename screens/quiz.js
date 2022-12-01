@@ -3,56 +3,109 @@ import React, {useState} from 'react';
 import {useEffect} from 'react';
 import Button from '../components/button';
 import Spacer from '../components/spacer';
-
+const shuffleArray = array => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+};
 const Quiz = () => {
   const [question, setQuestions] = useState();
   const [quesN, setQuesN] = useState(0);
+  const [options, setOptions] = useState([]);
+  const [score, setScore] = useState(0);
   const getQuiz = async () => {
-    const url = 'https://opentdb.com/api.php?amount=10&type=multiple';
+    const url =
+      'https://opentdb.com/api.php?amount=10&type=multiple&encode=url3986';
     const res = await fetch(url);
     const data = await res.json();
     setQuestions(data.results);
+    setOptions(generateOptionsAndShuffle(data.results[0]));
   };
   useEffect(() => {
     getQuiz();
   }, []);
+  const handleNextPress = () => {
+    setQuesN(quesN + 1);
+    setOptions(generateOptionsAndShuffle(question[quesN + 1]));
+  };
+  const generateOptionsAndShuffle = _question => {
+    const options = [..._question.incorrect_answers];
+    options.push(_question.correct_answer);
+    shuffleArray(options);
+    return options;
+  };
+  const handleSelectedOption = _option => {
+    console.log(options === question[quesN.correct_answer]);
+  };
   return (
     <View style={styles.container}>
       {question && (
         <View style={styles.parent}>
           <View style={styles.QuestionBox}>
-            <Text style={styles.textStyles}>Q: {question[quesN].question}</Text>
+            <Text style={styles.textStyles}>
+              {decodeURIComponent(question[quesN].question)}
+            </Text>
           </View>
           <View style={styles.Option}>
-            <TouchableOpacity style={styles.OptionBox}>
-              <Text style={styles.OptionText}> Option 1 </Text>
+            <TouchableOpacity
+              style={styles.OptionBox}
+              onPress={() => handleSelectedOption(options[0])}>
+              <Text style={styles.OptionText}>
+                {' '}
+                {decodeURIComponent(options[0])}{' '}
+              </Text>
             </TouchableOpacity>
             <Spacer height={10} />
-            <TouchableOpacity style={styles.OptionBox}>
-              <Text style={styles.OptionText}> Option 1 </Text>
+            <TouchableOpacity
+              style={styles.OptionBox}
+              onPress={() => handleSelectedOption(options[1])}>
+              <Text style={styles.OptionText}>
+                {' '}
+                {decodeURIComponent(options[1])}{' '}
+              </Text>
             </TouchableOpacity>
             <Spacer height={10} />
-            <TouchableOpacity style={styles.OptionBox}>
-              <Text style={styles.OptionText}> Option 1 </Text>
+            <TouchableOpacity
+              style={styles.OptionBox}
+              onPress={() => handleSelectedOption(options[2])}>
+              <Text style={styles.OptionText}>
+                {' '}
+                {decodeURIComponent(options[2])}{' '}
+              </Text>
             </TouchableOpacity>
             <Spacer height={10} />
-            <TouchableOpacity style={styles.OptionBox}>
-              <Text style={styles.OptionText}> Option 1 </Text>
+            <TouchableOpacity
+              style={styles.OptionBox}
+              onPress={() => handleSelectedOption(options[3])}>
+              <Text style={styles.OptionText}>
+                {' '}
+                {decodeURIComponent(options[3])}{' '}
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.bottom}>
-            <TouchableOpacity style={styles.buttonStyleSkip}>
+            {/* <TouchableOpacity style={styles.buttonStyleSkip}>
               <Text style={styles.buttonTextSkip}> Skip </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonStyle}>
-              <Text style={styles.buttonText}> Next </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {quesN !== 9 && (
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={handleNextPress}>
+                <Text style={styles.buttonText}> Next </Text>
+              </TouchableOpacity>
+            )}
+            {quesN === 9 && (
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => null}>
+                <Text style={styles.buttonText}> Show Result </Text>
+              </TouchableOpacity>
+            )}
           </View>
-          <Button
+          {/* <Button
             buttonStyle={{backgroundColor: '#e8e8e8'}}
             title={'END'}
             textStyle={{color: '#7f7f7f'}}
-          />
+          /> */}
           <Spacer height={50} />
         </View>
       )}
@@ -110,7 +163,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     backgroundColor: '#FB7F50',
-    width: '30%',
+    width: '100%',
     borderRadius: 10,
     height: 50,
     justifyContent: 'center',
