@@ -2,6 +2,11 @@
   "name": "Quiztt",
   "version": "0.0.1",
   "private": true,
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
+  },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -13,6 +18,8 @@
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/stack": "^6.3.7",
+    "lottie-ios": "3.4.1",
+    "lottie-react-native": "^5.1.4",
     "pod-install": "^0.1.38",
     "react": "18.1.0",
     "react-native": "0.70.6",
